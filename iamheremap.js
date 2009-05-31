@@ -1,4 +1,4 @@
-/* ======================================================================
+﻿/* ======================================================================
     jquery.js
    ====================================================================== */
 
@@ -4887,6 +4887,41 @@ info.aaronland.iamhere.Map.prototype.loadModestMap = function(){
 
 };
 
+info.aaronland.iamhere.Map.prototype.format_degree = function(value, axis)
+{
+    var dir = value;
+    var val = Math.abs(value);
+    
+    var deg = Math.floor(val);
+    val = (val - deg) * 60;
+    
+    var min = Math.floor(val);
+    val = (val - min) * 60;
+    
+    var sec = Math.floor(val);
+    
+    var str = deg + '°';
+    
+    if(min <= 9)
+        str += '0';
+
+    str += min + "'";
+    
+    if(sec <= 9)
+        str += '0';
+
+    str += sec + '"';
+    
+    if(axis == 'lat') {
+        str += (dir >= 0) ? 'N' : 'S';
+    
+    } else {
+        str += (dir >= 0) ? 'E' : 'W';
+    }
+    
+    return str;
+};
+
 info.aaronland.iamhere.Map.prototype.display_coordinates = function(lat, lon){
 
     if (typeof(lon) == 'undefined'){
@@ -4894,7 +4929,7 @@ info.aaronland.iamhere.Map.prototype.display_coordinates = function(lat, lon){
         return;
     }
 
-    $("#iamhere_coordinates").html(lat + "," + lon);
+    $("#iamhere_coordinates").html(this.format_degree(lat, 'lat') + "," + this.format_degree(lon, 'lon'));
 
 };
 
